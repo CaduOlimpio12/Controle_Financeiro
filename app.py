@@ -140,19 +140,20 @@ def exportar_csv():
     import csv
     from io import StringIO
     
-    # Conectar ao banco e buscar os dados (usando sua função conectar)
+    # Conectar ao banco e buscar os dados
     conn = conectar()
     cursor = conn.cursor()
-    # Buscando todas as transações da sua tabela 'transacoes'
-    cursor.execute("SELECT id, tipo, valor, data, categoria, descricao FROM transacoes")
+    
+    # BUSCANDO AS COLUNAS REAIS: id, pessoa, tipo, valor, categoria, data
+    cursor.execute("SELECT id, pessoa, tipo, valor, categoria, data FROM transacoes")
     rows = cursor.fetchall()
     
     # Criar o CSV na memória
     si = StringIO()
     cw = csv.writer(si)
     
-    # Cabeçalho das colunas para o seu BI
-    cw.writerow(['ID', 'Tipo', 'Valor', 'Data', 'Categoria', 'Descricao'])
+    # Cabeçalho correto para o seu BI (baseado no seu database.py)
+    cw.writerow(['ID', 'Pessoa', 'Tipo', 'Valor', 'Categoria', 'Data'])
     
     # Escrever os dados
     cw.writerows(rows)

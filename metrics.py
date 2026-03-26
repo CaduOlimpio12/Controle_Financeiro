@@ -11,8 +11,9 @@ def saldo_total():
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT SUM(CASE WHEN LOWER(tipo)='receita' THEN valor ELSE -valor END)
+    SELECT SUM(valor)
     FROM transacoes
+    WHERE LOWER(tipo)='receita'
     """)
 
     result = cursor.fetchone()[0]

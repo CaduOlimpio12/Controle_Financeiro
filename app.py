@@ -2,7 +2,7 @@
 # app.py (COMPLETO E CORRIGIDO)
 # ==========================
 
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, make_response, Response
 
 from database import criar_tabela, conectar
 from models import inserir_transacao
@@ -130,3 +130,36 @@ def clear():
 if __name__ == '__main__':
     criar_tabela()
     app.run(debug=True)
+
+# ==========================
+# ROTA CSV
+# ==========================
+
+@app.route('/exportar_csv')
+def exportar_csv():
+    import csv
+    from io import StringIO
+    
+    # Conectar ao banco e buscar os dados (usando sua função conectar)
+    conn = conectar()
+    cursor = conn.cursor()
+    # Buscando todas as transações da sua tabela 'transacoes'
+    cursor.execute("SELECT id, tipo, valor, data, categoria, descricao FROM transacoes")
+    rows = cursor.fetchall()
+    
+    # Criar o CSV na memória
+    si = StringIO()
+    cw = csv.writer(si)
+    
+    # Cabeçalho das colunas para o seu BI
+    cw.writerow(['ID', 'Tipo', 'Valor', 'Data', 'Categoria', 'Descricao'])
+    
+    # Escrever os dados
+    cw.writerows(rows)
+    
+    # Gerar a resposta para download
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=financeiro_casal.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
+

@@ -123,6 +123,24 @@ def clear():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 
+# ==========================
+# DELETAR ÚLTIMA TRANSAÇÃO
+# ==========================
+@app.route('/delete_last', methods=['POST'])
+def delete_last():
+    if 'user' not in session:
+        return jsonify({"erro": "não autorizado"}), 401
+
+    try:
+        conn = conectar()
+        cursor = conn.cursor()
+        # Deleta a transação com o maior ID (a mais recente)
+        cursor.execute("DELETE FROM transacoes WHERE id = (SELECT MAX(id) FROM transacoes)")
+        conn.commit()
+        conn.close()
+        return jsonify({"status": "ok", "mensagem": "Última transação removida com sucesso!"})
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
 
 # ==========================
 # START

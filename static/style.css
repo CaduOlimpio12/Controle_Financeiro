@@ -554,6 +554,34 @@ button:disabled {
     margin-bottom: 1rem;
 }
 
+/* NOVO: Botão de Desfazer (Amarelo/Laranja) */
+.btn-undo {
+    width: 100%;
+    background-color: #f59e0b; /* Cor de alerta/atenção */
+    color: white;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem; /* Espaço entre os botões */
+}
+
+.btn-undo:hover {
+    background-color: #d97706;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-undo:active {
+    transform: translateY(0);
+}
+
+/* Botão de Perigo (Mantido conforme o seu original) */
 .btn-danger {
     width: 100%;
     background-color: var(--danger-color);
